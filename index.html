@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>作業點收系統 (本地版)</title>
+    <title>作業點收系統 (本地增強版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -56,7 +56,6 @@
             transform: scale(1.1);
             border-color: rgba(0,0,0,0.2);
         }
-        /* Style for body when sync banner is active */
         .has-banner {
             padding-top: 40px;
         }
@@ -87,7 +86,6 @@
                     <button id="show-add-modal-btn" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors whitespace-nowrap">新增作業</button>
                 </div>
             </div>
-            <!-- Sort Controls -->
             <div class="flex justify-end items-center gap-2">
                 <label for="sort-homework" class="text-sm font-medium text-gray-600">排序：</label>
                 <select id="sort-homework" class="text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white">
@@ -107,33 +105,32 @@
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <p class="text-lg text-gray-600">讀取本地資料中...</p>
+        <p class="text-lg text-gray-600">系統載入中...</p>
     </div>
 
     <!-- 作業詳情頁面 -->
     <div id="detail-page" class="hidden container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         <header class="mb-8">
-            <button id="back-to-main-btn" class="text-indigo-600 hover:text-indigo-800 font-medium mb-4">
+            <button id="back-to-main-btn" class="text-indigo-600 hover:text-indigo-800 font-medium mb-4 block cursor-pointer z-10 relative">
                 &larr; 返回列表
             </button>
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center mt-2">
                 <h1 id="detail-homework-name" class="text-3xl sm:text-4xl font-bold text-gray-900 truncate mr-4"></h1>
                 <button id="show-all-done-btn" class="bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-green-700 transition-colors whitespace-nowrap flex-shrink-0">檢視完成名單</button>
             </div>
             <div id="status-summary" class="flex flex-wrap gap-4 mt-4 text-sm"></div>
         </header>
-        <div id="student-grid" class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-8 gap-3">
-        </div>
+        <div id="student-grid" class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-8 gap-3"></div>
     </div>
 
     <!-- 學生詳情頁面 -->
     <div id="student-details-page" class="hidden container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         <header class="mb-8 flex flex-col gap-4">
             <div>
-                 <button id="back-from-student-details-btn" class="text-indigo-600 hover:text-indigo-800 font-medium mb-4">
+                 <button id="back-from-student-details-btn" class="text-indigo-600 hover:text-indigo-800 font-medium mb-4 cursor-pointer">
                     &larr; 返回列表
                 </button>
-                <div class="flex justify-between items-center flex-wrap gap-2">
+                <div class="flex justify-between items-center flex-wrap gap-2 mt-2">
                     <h1 id="student-details-title" class="text-3xl sm:text-4xl font-bold text-gray-900 whitespace-nowrap">學生詳情</h1>
                     <button id="show-overall-all-done-btn" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition-colors text-sm whitespace-nowrap flex-shrink-0">
                         檢視全勤名單
@@ -148,17 +145,16 @@
                 </select>
             </div>
         </header>
-        <div id="student-details-list" class="space-y-4">
-        </div>
+        <div id="student-details-list" class="space-y-4"></div>
     </div>
 
     <!-- 作業種類管理頁面 -->
     <div id="homework-types-page" class="hidden container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         <header class="mb-8">
-            <button id="back-from-types-btn" class="text-indigo-600 hover:text-indigo-800 font-medium mb-4 block">
+            <button id="back-from-types-btn" class="text-indigo-600 hover:text-indigo-800 font-medium mb-4 block cursor-pointer">
                 &larr; 返回列表
             </button>
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center mt-2">
                 <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 whitespace-nowrap">作業種類管理</h1>
                 <button id="add-new-type-btn" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors whitespace-nowrap flex-shrink-0">
                     + 新增種類
@@ -166,17 +162,16 @@
             </div>
             <p class="text-gray-500 mt-2 text-sm">自訂作業種類與狀態。每個種類至少需有 2 個狀態，最多 4 個。</p>
         </header>
-        <div id="types-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        </div>
+        <div id="types-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </div>
 
     <!-- 聯絡簿頁面 -->
     <div id="contact-book-page" class="hidden container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
          <header class="mb-6">
-            <button id="back-from-contact-book-btn" class="text-indigo-600 hover:text-indigo-800 font-medium mb-4 block">
+            <button id="back-from-contact-book-btn" class="text-indigo-600 hover:text-indigo-800 font-medium mb-4 block cursor-pointer">
                 &larr; 返回列表
             </button>
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mt-2">
                 <div class="flex-shrink-0">
                     <h1 id="contact-book-title" class="text-3xl sm:text-4xl font-bold text-gray-900 whitespace-nowrap">聯絡簿</h1>
                     <p id="contact-book-date" class="text-gray-500 mt-1"></p>
@@ -196,8 +191,7 @@
         </header>
         <div class="bg-[#d2b48c] p-4 rounded-lg shadow-2xl" style="background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');">
             <div class="bg-[#2c3e50] rounded-lg shadow-inner p-6 flex flex-col" style="min-height: 60vh;">
-                <div id="blackboard-content" class="flex-grow text-white space-y-3 font-mono" style="font-size: 1.25rem;">
-                </div>
+                <div id="blackboard-content" class="flex-grow text-white space-y-3 font-mono" style="font-size: 1.25rem;"></div>
                 <form id="add-contact-item-form" class="mt-6 flex gap-2">
                     <input type="text" id="contact-book-input" class="flex-grow bg-gray-200 text-gray-800 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="輸入聯絡簿事項..." autocomplete="off">
                     <button type="submit" class="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-indigo-700 transition-colors">送出</button>
@@ -227,7 +221,7 @@
 
     <!-- 資料管理 Modal -->
     <div id="data-management-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden modal z-50">
-        <div class="modal-content bg-white rounded-lg shadow-xl p-8 w-full max-w-md transform scale-95">
+        <div class="modal-content bg-white rounded-lg shadow-xl p-8 w-full max-w-md transform scale-95 max-h-[90vh] overflow-y-auto">
            <h2 class="text-2xl font-bold mb-6 text-gray-800">資料管理</h2>
            
            <div class="space-y-4">
@@ -237,33 +231,50 @@
                         <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
                         自動儲存設定
                    </h3>
-                   <p id="current-file-status" class="text-xs text-indigo-700 mb-3 font-medium">狀態：未綁定本地檔案 (資料僅存在瀏覽器)</p>
-                   <button id="link-file-btn" class="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded hover:bg-indigo-700 shadow mb-2">建立 / 更改本地儲存檔案</button>
-                   <button id="unlink-file-btn" class="w-full bg-white text-red-600 border border-red-200 font-semibold py-2 px-4 rounded hover:bg-red-50 hidden">解除綁定</button>
+                   <div id="current-file-status" class="text-sm text-indigo-700 mb-4 font-medium leading-relaxed">
+                       狀態：未綁定本地檔案 (資料僅存在瀏覽器)
+                   </div>
+                   <button id="link-file-btn" class="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded hover:bg-indigo-700 shadow mb-2 transition-colors">建立 / 綁定本地儲存檔案</button>
+                   <button id="unlink-file-btn" class="w-full bg-white text-red-600 border border-red-200 font-semibold py-2 px-4 rounded hover:bg-red-50 hidden transition-colors">解除綁定</button>
                </div>
 
                <div class="relative flex py-2 items-center">
                    <div class="flex-grow border-t border-gray-300"></div>
-                   <span class="flex-shrink-0 mx-4 text-gray-400 text-xs">傳統匯出與匯入</span>
+                   <span class="flex-shrink-0 mx-4 text-gray-400 text-xs font-bold">手動匯出與匯入</span>
                    <div class="flex-grow border-t border-gray-300"></div>
                </div>
 
                <!-- 傳統匯出 -->
                <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
-                   <h3 class="font-bold text-gray-800 mb-2">手動下載備份</h3>
-                   <button id="export-data-btn" class="w-full bg-cyan-600 text-white font-semibold py-2 px-4 rounded hover:bg-cyan-700 shadow">下載為 JSON 檔</button>
+                   <h3 class="font-bold text-gray-800 mb-3">匯出選擇範圍</h3>
+                   <div class="mb-4 space-y-2">
+                       <label class="flex items-center text-sm text-gray-700 cursor-pointer">
+                           <input type="checkbox" id="export-hw-chk" checked class="mr-2 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                           作業與班級名單
+                       </label>
+                       <label class="flex items-center text-sm text-gray-700 cursor-pointer">
+                           <input type="checkbox" id="export-types-chk" checked class="mr-2 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                           作業種類設定
+                       </label>
+                       <label class="flex items-center text-sm text-gray-700 cursor-pointer">
+                           <input type="checkbox" id="export-contact-chk" checked class="mr-2 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                           聯絡簿 (包含 30 天內記錄)
+                       </label>
+                   </div>
+                   <button id="export-data-btn" class="w-full bg-cyan-600 text-white font-semibold py-2 px-4 rounded hover:bg-cyan-700 shadow transition-colors">下載為 JSON 檔</button>
                </div>
+               
                <!-- 傳統匯入 -->
                <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
                    <h3 class="font-bold text-gray-800 mb-2">手動還原</h3>
                    <p class="text-xs text-red-500 mb-3 font-medium">警告：這將覆蓋現有資料！</p>
                    <input type="file" id="import-file-input" accept=".json" class="hidden">
-                   <button id="trigger-import-btn" class="w-full bg-red-600 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 shadow">選擇檔案並覆蓋還原</button>
+                   <button id="trigger-import-btn" class="w-full bg-red-600 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 shadow transition-colors">選擇檔案並覆蓋還原</button>
                </div>
            </div>
 
-           <div class="flex justify-end pt-6 mt-4 border-t border-gray-100">
-               <button type="button" class="cancel-btn bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">關閉</button>
+           <div class="flex justify-end pt-4 mt-4 border-t border-gray-200">
+               <button type="button" class="cancel-btn bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">關閉</button>
            </div>
        </div>
    </div>
@@ -281,17 +292,15 @@
                 <!-- Homework Type Selection -->
                 <div id="homework-type-container">
                     <label for="homework-type-select" class="block text-sm font-medium text-gray-700">作業種類</label>
-                    <select id="homework-type-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-base bg-white">
-                        <!-- Types populated dynamically -->
-                    </select>
+                    <select id="homework-type-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-base bg-white"></select>
                 </div>
                 <div id="student-count-container">
                     <label for="student-count" class="block text-sm font-medium text-gray-700">班級人數</label>
                     <input type="number" id="student-count" min="1" max="100" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-base" required placeholder="例如：30">
                 </div>
                 <div class="flex justify-end space-x-4 pt-4">
-                    <button type="button" class="cancel-btn bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">取消</button>
-                    <button type="submit" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700">儲存</button>
+                    <button type="button" class="cancel-btn bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">取消</button>
+                    <button type="submit" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors">儲存</button>
                 </div>
             </form>
         </div>
@@ -317,12 +326,12 @@
     <div id="date-picker-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
         <div id="date-picker-content" class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm transform scale-95">
             <div class="flex items-center justify-between mb-4">
-                <button id="prev-month-btn" class="p-2 rounded-full hover:bg-gray-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                <button id="prev-month-btn" class="p-2 rounded-full hover:bg-gray-200 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
                 <h3 id="current-month-year" class="text-lg font-bold"></h3>
-                <button id="next-month-btn" class="p-2 rounded-full hover:bg-gray-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <button id="next-month-btn" class="p-2 rounded-full hover:bg-gray-200 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </button>
             </div>
             <div class="grid grid-cols-7 gap-1 text-center text-sm text-gray-500 mb-2">
@@ -357,7 +366,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- 確認 Modal -->
     <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden confirm-modal z-[60]">
@@ -420,6 +428,15 @@
     let calendarDate = new Date();
     let blackboardFontSize = 1.25;
     let lastViewedHomeworkId = null; 
+    let isSaving = false; // 防護標記
+
+    // 關閉網頁時的警告（如果有未完成寫入的資料）
+    window.addEventListener('beforeunload', (e) => {
+        if (isSaving) {
+            e.preventDefault();
+            e.returnValue = '資料正在寫入硬碟中，現在關閉可能會遺失資料！';
+        }
+    });
 
     // --- File System Access API 封裝 (IndexedDB 儲存 Handle) ---
     let fileHandle = null;
@@ -481,21 +498,24 @@
     }
 
     async function saveData() {
-        // 1. 寫入 LocalStorage 作為備用快取
-        localStorage.setItem('homeworkAppData', JSON.stringify(appData));
-        
-        // 2. 如果有綁定檔案且有權限，寫入實體檔案
-        if (fileHandle) {
-            try {
+        if (isSaving) return; // 避免重疊存檔
+        isSaving = true;
+        try {
+            // 1. 寫入 LocalStorage 作為備用快取
+            localStorage.setItem('homeworkAppData', JSON.stringify(appData));
+            
+            // 2. 如果有綁定檔案且有權限，寫入實體檔案
+            if (fileHandle) {
                 if ((await fileHandle.queryPermission({ mode: 'readwrite' })) === 'granted') {
                     const writable = await fileHandle.createWritable();
                     await writable.write(JSON.stringify(appData));
                     await writable.close();
                 }
-            } catch (error) {
-                console.error("無法寫入實體檔案:", error);
-                // 可能檔案被移動或刪除，但不影響 localStorage 正常運作
             }
+        } catch (error) {
+            console.error("無法寫入實體檔案:", error);
+        } finally {
+            isSaving = false;
         }
     }
 
@@ -566,34 +586,40 @@
         confirmCancel.addEventListener('click', cancelHandler);
     }
 
+    // 安全的儲存空間清理 (避免拋出異常導致UI卡住)
     function checkAndCleanupStorage() {
-        if (!currentClassId || appData.classes.length === 0) return;
-        const currentClass = appData.classes.find(c => c.id === currentClassId);
-        if (!currentClass || !currentClass.contactBook) return;
+        try {
+            if (!currentClassId || appData.classes.length === 0) return;
+            const currentClass = appData.classes.find(c => c.id === currentClassId);
+            if (!currentClass || !currentClass.contactBook) return;
 
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        const limitDateString = formatDate(thirtyDaysAgo, 'YYYY-MM-DD');
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            const limitDateString = formatDate(thirtyDaysAgo, 'YYYY-MM-DD');
 
-        let needsUpdate = false;
-        const newContactBook = {};
+            let needsUpdate = false;
+            const newContactBook = {};
 
-        for (const [dateStr, items] of Object.entries(currentClass.contactBook)) {
-            if (dateStr >= limitDateString) {
-                newContactBook[dateStr] = items;
-            } else {
-                needsUpdate = true; 
+            for (const [dateStr, items] of Object.entries(currentClass.contactBook)) {
+                if (dateStr >= limitDateString) {
+                    newContactBook[dateStr] = items;
+                } else {
+                    needsUpdate = true; 
+                }
             }
-        }
-        if (needsUpdate) {
-            currentClass.contactBook = newContactBook;
-            saveData();
+            if (needsUpdate) {
+                currentClass.contactBook = newContactBook;
+                saveData();
+            }
+        } catch (error) {
+            console.error("Cleanup error handled:", error);
         }
     }
 
     // --- 渲染 UI 函式 ---
     function updateTypeSelects() {
         const typeSelect = document.getElementById('homework-type-select');
+        if (!typeSelect) return;
         typeSelect.innerHTML = '';
         appData.homeworkTypes.forEach(t => {
             const opt = document.createElement('option');
@@ -785,7 +811,6 @@
     function renderStudentDetailsPage() {
         const studentDetailsList = document.getElementById('student-details-list');
         studentDetailsList.innerHTML = '';
-        const currentClass = appData.classes.find(c => c.id === currentClassId);
         
         const filteredHomeworks = appData.homeworks.filter(hw => hw.classId === currentClassId);
 
@@ -942,7 +967,7 @@
 
         for (let day = 1; day <= daysInMonth; day++) {
             const dayEl = document.createElement('button');
-            dayEl.className = 'calendar-day h-10 w-10 flex items-center justify-center rounded-full hover:bg-gray-100';
+            dayEl.className = 'calendar-day h-10 w-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors';
             dayEl.textContent = day;
             dayEl.dataset.day = day;
             
@@ -960,21 +985,19 @@
         const unlinkBtn = document.getElementById('unlink-file-btn');
 
         if (fileHandle) {
-            statusText.textContent = `狀態：已綁定本地檔案 (${fileHandle.name})`;
-            statusText.className = "text-xs text-green-700 mb-3 font-medium";
+            statusText.innerHTML = `狀態：已綁定本地檔案 <br><span class="text-indigo-900 font-bold bg-indigo-100 px-2 py-1 rounded inline-block mt-2">📄 ${fileHandle.name}</span>`;
             linkBtn.textContent = "更改綁定檔案";
             unlinkBtn.classList.remove('hidden');
         } else {
             statusText.textContent = "狀態：未綁定本地檔案 (資料僅存在瀏覽器)";
-            statusText.className = "text-xs text-indigo-700 mb-3 font-medium";
+            statusText.className = "text-sm text-indigo-700 mb-4 font-medium leading-relaxed";
             linkBtn.textContent = "建立 / 綁定本地儲存檔案";
             unlinkBtn.classList.add('hidden');
         }
         
-        // Hide File Access API options on unsupported browsers (like Firefox or mobile Safari)
         if (!window.showSaveFilePicker) {
             statusText.textContent = "狀態：您的瀏覽器不支援自動寫入本地檔案，請使用下方手動備份。";
-            statusText.className = "text-xs text-red-600 mb-3 font-medium";
+            statusText.className = "text-sm text-red-600 mb-4 font-medium leading-relaxed";
             linkBtn.classList.add('hidden');
             unlinkBtn.classList.add('hidden');
         }
@@ -990,16 +1013,24 @@
         ['main-page', 'detail-page', 'student-details-page', 'contact-book-page', 'homework-types-page'].forEach(id => {
             document.getElementById(id).classList.add('hidden');
         });
+        window.scrollTo(0, 0); // 跳頁時重置捲動軸
     }
 
     function showMainPage(fromHistory = false) {
-        if (!fromHistory) pushPageState({ page: 'main' }, '#main');
-        checkAndCleanupStorage();
-        renderClassSelector();
-        renderHomeworkList();
-        hideAllPages();
-        document.getElementById('main-page').classList.remove('hidden');
-        currentHomeworkId = null;
+        try {
+            if (!fromHistory) pushPageState({ page: 'main' }, '#main');
+            checkAndCleanupStorage();
+            updateTypeSelects(); // 確保每次回主頁更新最新下拉清單
+            renderClassSelector();
+            renderHomeworkList();
+            hideAllPages();
+            document.getElementById('main-page').classList.remove('hidden');
+            currentHomeworkId = null;
+        } catch (e) {
+            console.error("返回主畫面時發生錯誤:", e);
+            // 發生例外時強制顯示主頁面以防卡住
+            document.getElementById('main-page').classList.remove('hidden');
+        }
     }
 
     function showDetailPage(homeworkId, fromHistory = false) {
@@ -1084,6 +1115,7 @@
         document.getElementById('student-count-container').style.display = 'block';
         document.getElementById('homework-type-container').style.display = 'block';
         
+        updateTypeSelects(); // 打開時確保種類最新
         openModal(modal);
     });
     
@@ -1108,10 +1140,9 @@
             fileHandle = handle;
             await saveFileHandle(handle);
             
-            // Try to read immediately if it's an existing file
             await syncFromFileHandle();
+            await saveData(); 
             
-            await saveData(); // force save current to new file
             document.getElementById('sync-banner').classList.add('hidden');
             document.body.classList.remove('has-banner');
             updateDataManagementUI();
@@ -1134,9 +1165,42 @@
         }
     });
 
-    // --- 傳統備份還原事件 ---
+    // --- 傳統備份還原事件 (支援選擇性匯出) ---
     document.getElementById('export-data-btn').addEventListener('click', () => {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+        const exportHw = document.getElementById('export-hw-chk').checked;
+        const exportTypes = document.getElementById('export-types-chk').checked;
+        const exportContact = document.getElementById('export-contact-chk').checked;
+
+        // 深拷貝防污染
+        let exportData = JSON.parse(JSON.stringify(appData));
+
+        if (!exportHw) {
+            exportData.homeworks = [];
+        }
+
+        if (!exportTypes) {
+            exportData.homeworkTypes = DEFAULT_TYPES; 
+        }
+
+        if (!exportContact) {
+            exportData.classes.forEach(c => c.contactBook = {});
+        } else {
+            // 過濾聯絡簿，僅匯出近 30 天
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            const limitDateStr = formatDate(thirtyDaysAgo, 'YYYY-MM-DD');
+            exportData.classes.forEach(c => {
+                if (c.contactBook) {
+                    const filteredBook = {};
+                    for (const [date, items] of Object.entries(c.contactBook)) {
+                        if (date >= limitDateStr) filteredBook[date] = items;
+                    }
+                    c.contactBook = filteredBook;
+                }
+            });
+        }
+
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData));
         const downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
         downloadAnchorNode.setAttribute("download", `作業點收備份_${formatDate(new Date(), 'YYYY-MM-DD')}.json`);
@@ -1159,7 +1223,7 @@
                 const data = JSON.parse(e.target.result);
                 if(!data.classes || !data.homeworks || !data.homeworkTypes) throw new Error("無效的備份檔案格式");
 
-                showConfirmModal('匯入資料', '警告：這將會覆蓋當前所有的班級與作業資料，確定要繼續嗎？', async () => {
+                showConfirmModal('匯入資料', '警告：這將會完全覆蓋當前瀏覽器中的所有班級與作業資料，確定要繼續嗎？', async () => {
                      closeModal(document.getElementById('data-management-modal'));
                      appData = data;
                      fixDates(appData);
@@ -1645,7 +1709,7 @@
 
     // --- 歡迎畫面與同步處理 ---
     document.getElementById('welcome-skip-btn').addEventListener('click', () => {
-        localStorage.setItem('hasSeenWelcome_v2', 'true');
+        localStorage.setItem('hasSeenWelcome_final', 'true');
         closeModal(document.getElementById('welcome-modal'));
         showMainPage();
         if(appData.classes.length === 0) openModal(document.getElementById('manage-classes-modal'));
@@ -1654,7 +1718,7 @@
     document.getElementById('welcome-link-btn').addEventListener('click', async () => {
         if (!window.showSaveFilePicker) {
             alert("很抱歉，您的瀏覽器不支援自動儲存本地檔案功能。系統將為您切換至「瀏覽器暫存模式」。");
-            localStorage.setItem('hasSeenWelcome_v2', 'true');
+            localStorage.setItem('hasSeenWelcome_final', 'true');
             closeModal(document.getElementById('welcome-modal'));
             showMainPage();
             if(appData.classes.length === 0) openModal(document.getElementById('manage-classes-modal'));
@@ -1670,10 +1734,15 @@
             await saveFileHandle(handle);
             await syncFromFileHandle();
             await saveData();
-            alert("✅ 成功綁定檔案，系統將自動同步資料！");
             
-            localStorage.setItem('hasSeenWelcome_v2', 'true');
+            // 立即關閉歡迎視窗，再提示成功
+            localStorage.setItem('hasSeenWelcome_final', 'true');
             closeModal(document.getElementById('welcome-modal'));
+            
+            setTimeout(() => {
+                alert("✅ 成功建立並綁定檔案！系統將自動儲存變更。");
+            }, 300);
+
             showMainPage();
             if(appData.classes.length === 0) openModal(document.getElementById('manage-classes-modal'));
         } catch(e) {
@@ -1688,7 +1757,6 @@
     document.getElementById('resume-sync-btn').addEventListener('click', async () => {
         if (!fileHandle) return;
         try {
-            // 要求讀寫權限
             if ((await fileHandle.requestPermission({ mode: 'readwrite' })) === 'granted') {
                 document.getElementById('sync-banner').classList.add('hidden');
                 document.body.classList.remove('has-banner');
@@ -1700,35 +1768,33 @@
         }
     });
 
-
     // --- 初始化 ---
     async function init() {
-        // 先嘗試從 LocalStorage 載入資料 (最快)
         const localData = localStorage.getItem('homeworkAppData');
         if (localData) {
             appData = JSON.parse(localData);
             fixDates(appData);
         }
 
+        // 修正作業種類空白 Bug: 進入前確保種類清單已被更新
+        updateTypeSelects();
+
         document.getElementById('loading-page').classList.add('hidden');
 
-        // 首次使用判斷 (修改常數強制重跳一次歡迎視窗)
-        if (!localStorage.getItem('hasSeenWelcome_v2')) {
+        // 修改常數強制重跳一次歡迎視窗
+        if (!localStorage.getItem('hasSeenWelcome_final')) {
             openModal(document.getElementById('welcome-modal'));
             return;
         }
 
-        // 檢查是否曾經綁定檔案
         if (window.showSaveFilePicker) {
             try {
                 fileHandle = await getFileHandle();
                 if (fileHandle) {
                     const permission = await fileHandle.queryPermission({ mode: 'readwrite' });
                     if (permission === 'granted') {
-                        // 已經有權限，直接同步背景讀取
                         await syncFromFileHandle();
                     } else {
-                        // 需要使用者手動點擊授權
                         document.getElementById('sync-banner').classList.remove('hidden');
                         document.body.classList.add('has-banner');
                     }
