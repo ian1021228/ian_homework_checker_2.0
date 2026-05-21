@@ -86,6 +86,7 @@
                     <button id="show-add-modal-btn" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors whitespace-nowrap">新增作業</button>
                 </div>
             </div>
+            <!-- Sort Controls -->
             <div class="flex justify-end items-center gap-2">
                 <label for="sort-homework" class="text-sm font-medium text-gray-600">排序：</label>
                 <select id="sort-homework" class="text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white">
@@ -95,7 +96,7 @@
             </div>
         </header>
         <div id="homework-list" class="space-y-4">
-            <p id="empty-homework-message" class="text-center text-gray-500 py-8">目前沒有作業，請點擊右上角新增。</p>
+            <!-- 列表內容動態渲染 -->
         </div>
     </div>
     
@@ -105,7 +106,7 @@
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <p class="text-lg text-gray-600">系統載入中...</p>
+        <p class="text-lg text-gray-600">讀取本地資料中...</p>
     </div>
 
     <!-- 作業詳情頁面 -->
@@ -120,14 +121,15 @@
             </div>
             <div id="status-summary" class="flex flex-wrap gap-4 mt-4 text-sm"></div>
         </header>
-        <div id="student-grid" class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-8 gap-3"></div>
+        <div id="student-grid" class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-8 gap-3">
+        </div>
     </div>
 
     <!-- 學生詳情頁面 -->
     <div id="student-details-page" class="hidden container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         <header class="mb-8 flex flex-col gap-4">
             <div>
-                 <button id="back-from-student-details-btn" class="text-indigo-600 hover:text-indigo-800 font-medium mb-4 cursor-pointer">
+                 <button id="back-from-student-details-btn" class="text-indigo-600 hover:text-indigo-800 font-medium mb-4 cursor-pointer block">
                     &larr; 返回列表
                 </button>
                 <div class="flex justify-between items-center flex-wrap gap-2 mt-2">
@@ -145,7 +147,8 @@
                 </select>
             </div>
         </header>
-        <div id="student-details-list" class="space-y-4"></div>
+        <div id="student-details-list" class="space-y-4">
+        </div>
     </div>
 
     <!-- 作業種類管理頁面 -->
@@ -162,7 +165,8 @@
             </div>
             <p class="text-gray-500 mt-2 text-sm">自訂作業種類與狀態。每個種類至少需有 2 個狀態，最多 4 個。</p>
         </header>
-        <div id="types-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        <div id="types-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        </div>
     </div>
 
     <!-- 聯絡簿頁面 -->
@@ -191,7 +195,8 @@
         </header>
         <div class="bg-[#d2b48c] p-4 rounded-lg shadow-2xl" style="background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');">
             <div class="bg-[#2c3e50] rounded-lg shadow-inner p-6 flex flex-col" style="min-height: 60vh;">
-                <div id="blackboard-content" class="flex-grow text-white space-y-3 font-mono" style="font-size: 1.25rem;"></div>
+                <div id="blackboard-content" class="flex-grow text-white space-y-3 font-mono" style="font-size: 1.25rem;">
+                </div>
                 <form id="add-contact-item-form" class="mt-6 flex gap-2">
                     <input type="text" id="contact-book-input" class="flex-grow bg-gray-200 text-gray-800 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="輸入聯絡簿事項..." autocomplete="off">
                     <button type="submit" class="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-indigo-700 transition-colors">送出</button>
@@ -672,7 +677,7 @@
 
     function renderHomeworkList() {
         const homeworkList = document.getElementById('homework-list');
-        const emptyMessage = document.getElementById('empty-homework-message');
+        if (!homeworkList) return;
         
         let filteredHomeworks = appData.homeworks.filter(hw => hw.classId === currentClassId);
         const sortMethod = document.getElementById('sort-homework').value;
@@ -689,13 +694,12 @@
             return 0;
         });
 
+        // 完全重構 DOM 寫法，避免 null 錯誤
         homeworkList.innerHTML = '';
         
         if (filteredHomeworks.length === 0) {
-            homeworkList.appendChild(emptyMessage);
-            emptyMessage.style.display = 'block';
+            homeworkList.innerHTML = '<p id="empty-homework-message" class="text-center text-gray-500 py-8">目前沒有作業，請點擊右上角新增。</p>';
         } else {
-            emptyMessage.style.display = 'none';
             filteredHomeworks.forEach(hw => {
                 const typeId = hw.typeId || 'default';
                 const typeConfig = getHomeworkType(typeId);
@@ -1003,65 +1007,94 @@
         }
     }
 
-    // --- 頁面切換 ---
+    // --- 頁面切換機制 (核心修復：強制隱藏一切再顯示目標) ---
     function pushPageState(stateObj, hash) {
         if (history.state && history.state.page === stateObj.page && history.state.id === stateObj.id) return;
         history.pushState(stateObj, '', hash);
     }
 
     function hideAllPages() {
-        ['main-page', 'detail-page', 'student-details-page', 'contact-book-page', 'homework-types-page'].forEach(id => {
-            document.getElementById(id).classList.add('hidden');
+        // 保證所有畫面都被蓋掉並重置捲動，杜絕殘影
+        const pages = ['main-page', 'detail-page', 'student-details-page', 'contact-book-page', 'homework-types-page'];
+        pages.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
         });
-        window.scrollTo(0, 0); // 跳頁時重置捲動軸
+        window.scrollTo(0, 0); 
     }
 
     function showMainPage(fromHistory = false) {
+        // 先執行強制隱藏
+        hideAllPages();
+        const mainPageEl = document.getElementById('main-page');
+        if (mainPageEl) mainPageEl.classList.remove('hidden');
+
         try {
             if (!fromHistory) pushPageState({ page: 'main' }, '#main');
             checkAndCleanupStorage();
-            updateTypeSelects(); // 確保每次回主頁更新最新下拉清單
+            updateTypeSelects(); 
             renderClassSelector();
             renderHomeworkList();
-            hideAllPages();
-            document.getElementById('main-page').classList.remove('hidden');
             currentHomeworkId = null;
         } catch (e) {
             console.error("返回主畫面時發生錯誤:", e);
-            // 發生例外時強制顯示主頁面以防卡住
-            document.getElementById('main-page').classList.remove('hidden');
         }
     }
 
     function showDetailPage(homeworkId, fromHistory = false) {
-        if (!fromHistory) pushPageState({ page: 'detail', id: homeworkId }, '#detail');
-        renderStudentGrid(homeworkId);
         hideAllPages();
-        document.getElementById('detail-page').classList.remove('hidden');
+        const detailPageEl = document.getElementById('detail-page');
+        if (detailPageEl) detailPageEl.classList.remove('hidden');
+
+        try {
+            if (!fromHistory) pushPageState({ page: 'detail', id: homeworkId }, '#detail');
+            renderStudentGrid(homeworkId);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     function showStudentDetailsPage(fromHistory = false) {
-        if (!fromHistory) pushPageState({ page: 'student-details' }, '#student-details');
-        renderStudentDetailsPage();
         hideAllPages();
-        document.getElementById('student-details-page').classList.remove('hidden');
+        const studentPageEl = document.getElementById('student-details-page');
+        if (studentPageEl) studentPageEl.classList.remove('hidden');
+
+        try {
+            if (!fromHistory) pushPageState({ page: 'student-details' }, '#student-details');
+            renderStudentDetailsPage();
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     function showContactBookPage(fromHistory = false) {
-        if (!fromHistory) pushPageState({ page: 'contact-book' }, '#contact-book');
-        selectedDate = new Date();
-        const currentClass = appData.classes.find(c => c.id === currentClassId);
-        document.getElementById('contact-book-title').textContent = `${currentClass?.name || ''} 聯絡簿`;
-        renderContactBookItems();
         hideAllPages();
-        document.getElementById('contact-book-page').classList.remove('hidden');
+        const contactPageEl = document.getElementById('contact-book-page');
+        if (contactPageEl) contactPageEl.classList.remove('hidden');
+
+        try {
+            if (!fromHistory) pushPageState({ page: 'contact-book' }, '#contact-book');
+            selectedDate = new Date();
+            const currentClass = appData.classes.find(c => c.id === currentClassId);
+            const titleEl = document.getElementById('contact-book-title');
+            if (titleEl) titleEl.textContent = `${currentClass?.name || ''} 聯絡簿`;
+            renderContactBookItems();
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     function showHomeworkTypesPage(fromHistory = false) {
-        if (!fromHistory) pushPageState({ page: 'homework-types' }, '#homework-types');
-        renderHomeworkTypesPage();
         hideAllPages();
-        document.getElementById('homework-types-page').classList.remove('hidden');
+        const typePageEl = document.getElementById('homework-types-page');
+        if (typePageEl) typePageEl.classList.remove('hidden');
+
+        try {
+            if (!fromHistory) pushPageState({ page: 'homework-types' }, '#homework-types');
+            renderHomeworkTypesPage();
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     window.addEventListener('popstate', (e) => {
@@ -1076,6 +1109,7 @@
 
     // --- Modal 控制 ---
     function openModal(modal) {
+        if(!modal) return;
         modal.classList.remove('hidden');
         setTimeout(() => {
              modal.classList.remove('opacity-0');
@@ -1085,6 +1119,7 @@
     }
     
     function closeModal(modal) {
+        if(!modal) return;
         modal.classList.add('opacity-0');
         const content = modal.querySelector('.modal-content, .confirm-modal-content, #date-picker-content');
         if(content) content.classList.add('scale-95');
@@ -1140,9 +1175,10 @@
             fileHandle = handle;
             await saveFileHandle(handle);
             
+            // Try to read immediately if it's an existing file
             await syncFromFileHandle();
-            await saveData(); 
             
+            await saveData(); // force save current to new file
             document.getElementById('sync-banner').classList.add('hidden');
             document.body.classList.remove('has-banner');
             updateDataManagementUI();
