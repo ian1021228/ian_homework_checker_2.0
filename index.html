@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW" translate="no">
 <head>
     <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>作業點收系統 (本地增強版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -931,7 +932,7 @@
             statusCounts[student.status] = (statusCounts[student.status] || 0) + 1;
             
             const studentBtn = document.createElement('button');
-            studentBtn.className = `student-btn rounded-xl shadow-sm text-center font-bold transition-all transform hover:scale-105 active:scale-95 ${statusInfo.color} ${statusInfo.textColor} flex flex-col items-center justify-center border-2 border-transparent aspect-square overflow-hidden cursor-pointer`;
+            studentBtn.className = `student-btn rounded-xl shadow-sm text-center font-bold transition-all transform hover:scale-105 active:scale-95 ${statusInfo.color} ${statusInfo.textColor} flex flex-col items-center justify-center border-2 border-transparent aspect-square overflow-hidden cursor-pointer w-full h-full`;
             studentBtn.dataset.seat = student.seat;
             
             // 進一步調降字體比例，讓畫面更精緻和諧
@@ -1474,7 +1475,7 @@
             openModal(document.getElementById('overall-all-done-modal'));
         });
 
-        // 綁定作業方格的點擊事件 (修復無法改變狀態的 Bug)
+        // 綁定作業方格的點擊事件
         const studentGrid = document.getElementById('student-grid');
         if (studentGrid) {
             studentGrid.addEventListener('click', async (e) => {
