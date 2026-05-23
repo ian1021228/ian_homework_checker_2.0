@@ -94,6 +94,7 @@
                      <select id="class-selector" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-2 px-3 bg-white font-bold text-indigo-700"></select>
                 </div>
                 <div class="flex gap-2 flex-wrap justify-end w-full lg:w-auto">
+                     <button id="intro-btn" class="bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-900 transition-colors whitespace-nowrap">網站介紹</button>
                      <button id="show-types-modal-btn" class="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-orange-600 transition-colors whitespace-nowrap">作業種類</button>
                      <button id="contact-book-btn" class="bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-purple-700 transition-colors whitespace-nowrap">聯絡簿</button>
                      <button id="student-details-btn" class="bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-green-700 transition-colors whitespace-nowrap">學生詳情</button>
@@ -136,18 +137,20 @@
                 </div>
             </div>
             
+            <!-- 全班一鍵變更區塊 -->
             <div class="mt-4 p-3 bg-indigo-50 border border-indigo-100 rounded-lg flex flex-wrap items-center gap-3 shadow-sm">
                 <span class="text-sm font-bold text-indigo-900">⚡ 全班一鍵變更：</span>
                 <select id="batch-status-select" class="text-sm rounded border-gray-300 p-1.5 focus:ring-indigo-500 focus:border-indigo-500 font-semibold"></select>
                 <button id="batch-status-btn" class="bg-indigo-600 text-white text-sm px-4 py-1.5 rounded shadow hover:bg-indigo-700 transition-colors font-bold">全部套用</button>
                 <span class="text-xs text-indigo-500 ml-auto hidden sm:block">※ 套用後將改變下方所有座號狀態</span>
             </div>
+
             <div id="status-summary" class="flex flex-wrap gap-4 mt-4 text-sm font-medium"></div>
         </header>
         
         <!-- 智慧排版容器：自動計算大小填滿，不再捲動 -->
         <div class="flex-grow flex items-center justify-center w-full">
-            <div id="student-grid" class="w-full"></div>
+            <div id="student-grid" class="w-full cursor-pointer"></div>
         </div>
     </div>
 
@@ -224,6 +227,53 @@
                     <input type="text" id="contact-book-input" class="flex-grow bg-gray-200 text-gray-800 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="輸入聯絡簿事項..." autocomplete="off">
                     <button type="submit" class="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-indigo-700 transition-colors">送出</button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 網站介紹 Modal -->
+    <div id="intro-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden modal z-[100]">
+        <div class="modal-content bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl transform scale-95 max-h-[90vh] flex flex-col">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800 flex-shrink-0 border-b pb-2">📖 系統功能與使用教學</h2>
+            <div class="overflow-y-auto pr-2 space-y-5 text-sm text-gray-700 flex-grow">
+                
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-700 mb-1">💾 資料安全與本地儲存</h3>
+                    <p>本系統採用瀏覽器最新的 <b>File System Access API</b>，所有的資料都會直接寫入您設定的 <code>.json</code> 檔案中，完全無雲端外洩風險！系統會在每次操作時<b>自動覆蓋儲存</b>，讓您無後顧之憂。</p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-700 mb-1">📝 作業點收與管理</h3>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><b>智慧缺號排除：</b>新增作業時，可輸入班級缺號（如轉出學生），系統建立的方格名單會自動跳過該號碼，並會<b>自動記憶</b>上次的設定。</li>
+                        <li><b>全班一鍵變更：</b>點進作業後，可使用上方「⚡ 全班一鍵變更」下拉選單，瞬間將全班狀態改為「已繳交」或「已完成」，然後再手動點擊微調未交名單，速度提升10倍。</li>
+                        <li><b>點擊狀態切換：</b>滑鼠點擊或手指觸控座號方格，即可在不同狀態間循環切換。</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-700 mb-1">📖 聯絡簿整合功能</h3>
+                    <p>進入聯絡簿後，輸入當日事項。游標移到事項右側會出現三個圖示：</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><b>📖 (轉作業)：</b>點擊後直接把該行文字當作作業名稱，開啟新增作業畫面，無縫銜接不需重複打字！</li>
+                        <li><b>✏️ (編輯)：</b>直接修改該行錯字。</li>
+                        <li><b>&times; (刪除)：</b>移除該行事項。</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-700 mb-1">⚙️ 自訂作業種類</h3>
+                    <p>點擊右上角「作業種類」進入管理。您可以自訂不同的任務類型（例如：一般作業、閱讀、帶回簽名），並自由設定狀態名稱與顏色（最少2個，最多4個）。記得勾選是否算作「已完成」，這會影響全勤名單的計算！</p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-indigo-700 mb-1">⏱️ 時光機與自動備份</h3>
+                    <p>進入「資料管理」，系統擁有**時光機功能**，每天會默默為您在瀏覽器底層備份前3天的資料。萬一實體檔案遺失或改錯，點擊還原即可瞬間救回！您也可以使用傳統手動備份功能，勾選想匯出的項目下載。</p>
+                </div>
+
+            </div>
+            <div class="flex justify-end pt-4 mt-4 border-t border-gray-200 flex-shrink-0">
+                <button type="button" class="cancel-btn bg-indigo-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-indigo-700 transition-colors">我知道了</button>
             </div>
         </div>
     </div>
@@ -881,11 +931,12 @@
             statusCounts[student.status] = (statusCounts[student.status] || 0) + 1;
             
             const studentBtn = document.createElement('button');
-            studentBtn.className = `student-btn rounded-xl shadow-sm text-center font-bold transition-all transform hover:scale-105 active:scale-95 ${statusInfo.color} ${statusInfo.textColor} flex flex-col items-center justify-center border-2 border-transparent aspect-square overflow-hidden`;
+            studentBtn.className = `student-btn rounded-xl shadow-sm text-center font-bold transition-all transform hover:scale-105 active:scale-95 ${statusInfo.color} ${statusInfo.textColor} flex flex-col items-center justify-center border-2 border-transparent aspect-square overflow-hidden cursor-pointer`;
             studentBtn.dataset.seat = student.seat;
             
-            const fontSizeNum = Math.max(14, bestBoxSize * 0.35); 
-            const fontSizeText = Math.max(10, bestBoxSize * 0.16); 
+            // 進一步調降字體比例，讓畫面更精緻和諧
+            const fontSizeNum = Math.max(12, bestBoxSize * 0.28); 
+            const fontSizeText = Math.max(9, bestBoxSize * 0.12); 
             
             studentBtn.innerHTML = `
                 <span class="font-black leading-none tracking-tighter" style="font-size: ${fontSizeNum}px;">${student.seat}</span>
@@ -1324,6 +1375,8 @@
             if (el) el.addEventListener('click', handler);
         };
 
+        bindClick('intro-btn', () => openModal(document.getElementById('intro-modal')));
+
         bindClick('show-add-modal-btn', () => {
             const modal = document.getElementById('add-homework-modal');
             document.getElementById('homework-modal-title').textContent = '新增作業';
@@ -1420,6 +1473,35 @@
             renderAllDoneList(allDoneStudents, 'overall-all-done-list');
             openModal(document.getElementById('overall-all-done-modal'));
         });
+
+        // 綁定作業方格的點擊事件 (修復無法改變狀態的 Bug)
+        const studentGrid = document.getElementById('student-grid');
+        if (studentGrid) {
+            studentGrid.addEventListener('click', async (e) => {
+                const studentBtn = e.target.closest('.student-btn');
+                if (studentBtn) {
+                    const seat = parseInt(studentBtn.dataset.seat);
+                    const hw = appData.homeworks.find(h => h.id === currentHomeworkId);
+                    if (!hw) return;
+                    const studentIndex = hw.students.findIndex(s => s.seat === seat);
+                    if (studentIndex === -1) return;
+                    
+                    const student = hw.students[studentIndex];
+                    const typeConfig = getHomeworkType(hw.typeId);
+                    
+                    let currentIndex = typeConfig.statuses.findIndex(s => s.key === student.status);
+                    if(currentIndex === -1) currentIndex = 0;
+
+                    const nextIndex = (currentIndex + 1) % typeConfig.statuses.length;
+                    const newStatus = typeConfig.statuses[nextIndex].key;
+                    
+                    hw.students[studentIndex].status = newStatus;
+                    
+                    renderStudentGrid(currentHomeworkId); 
+                    await saveData();
+                }
+            });
+        }
     }
 
     // --- 本地檔案綁定功能 ---
